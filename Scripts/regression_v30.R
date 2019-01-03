@@ -89,7 +89,7 @@ shp.YR0010 <- spChFIDs(shp.YR0010, shp.YR0010@data$StCntTrYr) # change the fid f
 
 
 
-#2.3. generate contiguity matrices for each UA and each decade 
+#2.3. Prepare a SpatialPolygonsDataFrame (without missing observations) for each decade.  
 
 geodata8090 <- merge(shp.YR8090, subset(migrdata, yr8090==1), by="StCntTrYr")#, duplicateGeoms = TRUE) <- inner join
 #head(geodata8090@data)
@@ -113,7 +113,7 @@ geodata0010@data <- geodata0010@data[order(geodata0010@data$UA, geodata0010@data
 
 
 
-#2.4. Estimate spatial lag & error models for 80s.
+#2.4. three-decade models: Estimate spatial lag & error models for 80s.
 
 list.queen.80s <- poly2nb(geodata8090, queen=TRUE)
 W.80s <- nb2listw(list.queen.80s, style="W", zero.policy=TRUE)
@@ -179,7 +179,7 @@ colnames(df.err.80s) <- c("coef.youngest", "p.youngest",
 
 
 
-#2.5. Estimate spatial lag & error models for 90s. 
+#2.5. three-decade models: Estimate spatial lag & error models for 90s. 
 
 list.queen.90s <- poly2nb(geodata9000, queen=TRUE)
 W.90s <- nb2listw(list.queen.90s, style="W", zero.policy=TRUE)
@@ -245,7 +245,7 @@ colnames(df.err.90s) <- c("coef.youngest", "p.youngest",
 
 
 
-#2.6. Estimate spatial lag & error models for 00s. 
+#2.6. three-decade models: Estimate spatial lag & error models for 00s. 
 
 list.queen.00s <- poly2nb(geodata0010, queen=TRUE)
 W.00s <- nb2listw(list.queen.00s, style="W", zero.policy=TRUE)
