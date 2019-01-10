@@ -7,9 +7,7 @@ install.packages("RColorBrewer", dependencies = TRUE)
 install.packages("McSpatial", dependencies = TRUE)
 install.packages('spDataLarge',
                  repos='https://nowosad.github.io/drat/', type='source')
-#install.packages("stargazer")
-install.packages("tidyverse", dependencies = TRUE)
-#install.packages("dplyr")
+install.packages("stargazer")
 
 library(spdep)
 library(spDataLarge)
@@ -21,9 +19,7 @@ library(RColorBrewer)
 library(sas7bdat)
 library(rgdal)
 library(McSpatial)
-#library(stargazer)
-library(tidyverse)
-library(dplyr)
+library(stargazer)
 
 setwd("M:/Millennial_panel/09_NetMigration1980/Scrach")
 
@@ -253,7 +249,7 @@ q25a.youngest$rn <- rownames(q25a.youngest)
 q50a.youngest$rn <- rownames(q50a.youngest)
 q75a.youngest$rn <- rownames(q75a.youngest)
 
-df <- plyr::join_all(list(q25a.youngest, q50a.youngest, q75a.youngest), by='rn', type='full') 
+df <- join_all(list(q25a.youngest, q50a.youngest, q75a.youngest), by='rn', type='full') 
 row.names(df) <- df$rn
 df$rn <- NULL
 df8090.youngest <- df[2:4, ] # <- to generate regression tables 
@@ -272,7 +268,7 @@ q50b.youngest$rn <- rownames(q50b.youngest)
 q75b.youngest$rn <- rownames(q75b.youngest)
 
 df<- NULL
-df <- plyr::join_all(list(q25b.youngest, q50b.youngest, q75b.youngest), by='rn', type='full') 
+df <- join_all(list(q25b.youngest, q50b.youngest, q75b.youngest), by='rn', type='full') 
 row.names(df) <- df$rn
 df$rn <- NULL
 df9000.youngest <- df[2:4, ] # <- to generate regression tables 
@@ -291,7 +287,7 @@ q50c.youngest$rn <- rownames(q50c.youngest)
 q75c.youngest$rn <- rownames(q75c.youngest)
 
 df <- NULL
-df <- plyr::join_all(list(q25c.youngest, q50c.youngest, q75c.youngest), by='rn', type='full')  
+df <- join_all(list(q25c.youngest, q50c.youngest, q75c.youngest), by='rn', type='full')  
 row.names(df) <- df$rn
 df$rn <- NULL
 df0010.youngest <- df[2:4, ] # <- to generate regression tables 
@@ -342,7 +338,7 @@ q25a.young$rn <- rownames(q25a.young)
 q50a.young$rn <- rownames(q50a.young)
 q75a.young$rn <- rownames(q75a.young)
 
-df <- plyr::join_all(list(q25a.young, q50a.young, q75a.young), by='rn', type='full') 
+df <- join_all(list(q25a.young, q50a.young, q75a.young), by='rn', type='full') 
 row.names(df) <- df$rn
 df$rn <- NULL
 df8090.young <- df[2:4, ] # <- to generate regression tables 
@@ -361,7 +357,7 @@ q50b.young$rn <- rownames(q50b.young)
 q75b.young$rn <- rownames(q75b.young)
 
 df<- NULL
-df <- plyr::join_all(list(q25b.young, q50b.young, q75b.young), by='rn', type='full') 
+df <- join_all(list(q25b.young, q50b.young, q75b.young), by='rn', type='full') 
 row.names(df) <- df$rn
 df$rn <- NULL
 df9000.young <- df[2:4, ] # <- to generate regression tables 
@@ -380,7 +376,7 @@ q50c.young$rn <- rownames(q50c.young)
 q75c.young$rn <- rownames(q75c.young)
 
 df <- NULL
-df <- plyr::join_all(list(q25c.young, q50c.young, q75c.young), by='rn', type='full')  
+df <- join_all(list(q25c.young, q50c.young, q75c.young), by='rn', type='full')  
 row.names(df) <- df$rn
 df$rn <- NULL
 df0010.young <- df[2:4, ] # <- to generate regression tables 
@@ -430,7 +426,7 @@ q25a.midlife$rn <- rownames(q25a.midlife)
 q50a.midlife$rn <- rownames(q50a.midlife)
 q75a.midlife$rn <- rownames(q75a.midlife)
 
-df <- plyr::join_all(list(q25a.midlife, q50a.midlife, q75a.midlife), by='rn', type='full') 
+df <- join_all(list(q25a.midlife, q50a.midlife, q75a.midlife), by='rn', type='full') 
 row.names(df) <- df$rn
 df$rn <- NULL
 df8090.midlife <- df[2:4, ] # <- to generate regression tables 
@@ -449,7 +445,7 @@ q50b.midlife$rn <- rownames(q50b.midlife)
 q75b.midlife$rn <- rownames(q75b.midlife)
 
 df<- NULL
-df <- plyr::join_all(list(q25b.midlife, q50b.midlife, q75b.midlife), by='rn', type='full') 
+df <- join_all(list(q25b.midlife, q50b.midlife, q75b.midlife), by='rn', type='full') 
 row.names(df) <- df$rn
 df$rn <- NULL
 df9000.midlife <- df[2:4, ] # <- to generate regression tables 
@@ -468,11 +464,12 @@ q50c.midlife$rn <- rownames(q50c.midlife)
 q75c.midlife$rn <- rownames(q75c.midlife)
 
 df <- NULL
-df <- plyr::join_all(list(q25c.midlife, q50c.midlife, q75c.midlife), by='rn', type='full')  
+df <- join_all(list(q25c.midlife, q50c.midlife, q75c.midlife), by='rn', type='full')  
 row.names(df) <- df$rn
 df$rn <- NULL
 df0010.midlife <- df[2:4, ] # <- to generate regression tables 
 df0010.midlife
+
 
 
 
@@ -518,7 +515,7 @@ q25a.middle$rn <- rownames(q25a.middle)
 q50a.middle$rn <- rownames(q50a.middle)
 q75a.middle$rn <- rownames(q75a.middle)
 
-df <- plyr::join_all(list(q25a.middle, q50a.middle, q75a.middle), by='rn', type='full') 
+df <- join_all(list(q25a.middle, q50a.middle, q75a.middle), by='rn', type='full') 
 row.names(df) <- df$rn
 df$rn <- NULL
 df8090.middle <- df[2:4, ] # <- to generate regression tables 
@@ -537,7 +534,7 @@ q50b.middle$rn <- rownames(q50b.middle)
 q75b.middle$rn <- rownames(q75b.middle)
 
 df<- NULL
-df <- plyr::join_all(list(q25b.middle, q50b.middle, q75b.middle), by='rn', type='full') 
+df <- join_all(list(q25b.middle, q50b.middle, q75b.middle), by='rn', type='full') 
 row.names(df) <- df$rn
 df$rn <- NULL
 df9000.middle <- df[2:4, ] # <- to generate regression tables 
@@ -556,12 +553,11 @@ q50c.middle$rn <- rownames(q50c.middle)
 q75c.middle$rn <- rownames(q75c.middle)
 
 df <- NULL
-df <- plyr::join_all(list(q25c.middle, q50c.middle, q75c.middle), by='rn', type='full')  
+df <- join_all(list(q25c.middle, q50c.middle, q75c.middle), by='rn', type='full')  
 row.names(df) <- df$rn
 df$rn <- NULL
 df0010.middle <- df[2:4, ] # <- to generate regression tables 
 df0010.middle
-
 
 
 # 3.5. Merge all outcomes from three-decade models 
@@ -585,32 +581,10 @@ df8010.middle <- df8010.middle[c(1, 4, 7, 2, 5, 8, 3, 6, 9), ]
 
 
 
-df8010.youngest 
-df8010.young 
-df8010.midlife 
+df8010.youngest
+df8010.young
+df8010.midlife
 df8010.middle
-
-write.csv(df8010.youngest, file="M:/Millennial_panel/09_NetMigration1980/scrach/df8010_youngest.csv")
-write.csv(df8010.young,    file="M:/Millennial_panel/09_NetMigration1980/scrach/df8010_young.csv")
-write.csv(df8010.midlife,  file="M:/Millennial_panel/09_NetMigration1980/scrach/df8010_midlife.csv")
-write.csv(df8010.middle,   file="M:/Millennial_panel/09_NetMigration1980/scrach/df8010_middle.csv")
-
-
-df8010.youngest[1:3, ]
-df8010.young[1:3, ]
-df8010.midlife[1:3, ]
-df8010.middle[1:3, ]
-
-df8010.youngest[4:6, ]
-df8010.young[4:6, ]
-df8010.midlife[4:6, ]
-df8010.middle[4:6, ]
-
-df8010.youngest[7:9, ]
-df8010.young[7:9, ]
-df8010.midlife[7:9, ]
-df8010.middle[7:9, ]
-
 
 
 # 4.1. Estimate two-decade models: Youngest
@@ -650,7 +624,7 @@ q50bt.youngest$rn <- rownames(q50bt.youngest)
 q75bt.youngest$rn <- rownames(q75bt.youngest)
 
 df<- NULL
-df <- plyr::join_all(list(q25bt.youngest, q50bt.youngest, q75bt.youngest), by='rn', type='full') 
+df <- join_all(list(q25bt.youngest, q50bt.youngest, q75bt.youngest), by='rn', type='full') 
 row.names(df) <- df$rn
 df$rn <- NULL
 df9000t.youngest <- df[2:5, ] # <- to generate regression tables 
@@ -669,7 +643,7 @@ q50ct.youngest$rn <- rownames(q50ct.youngest)
 q75ct.youngest$rn <- rownames(q75ct.youngest)
 
 df <- NULL
-df <- plyr::join_all(list(q25ct.youngest, q50ct.youngest, q75ct.youngest), by='rn', type='full')  
+df <- join_all(list(q25ct.youngest, q50ct.youngest, q75ct.youngest), by='rn', type='full')  
 row.names(df) <- df$rn
 df$rn <- NULL
 df0010t.youngest <- df[2:5, ] # <- to generate regression tables 
@@ -715,7 +689,7 @@ q50bt.young$rn <- rownames(q50bt.young)
 q75bt.young$rn <- rownames(q75bt.young)
 
 df<- NULL
-df <- plyr::join_all(list(q25bt.young, q50bt.young, q75bt.young), by='rn', type='full') 
+df <- join_all(list(q25bt.young, q50bt.young, q75bt.young), by='rn', type='full') 
 row.names(df) <- df$rn
 df$rn <- NULL
 df9000t.young <- df[2:5, ] # <- to generate regression tables 
@@ -734,7 +708,7 @@ q50ct.young$rn <- rownames(q50ct.young)
 q75ct.young$rn <- rownames(q75ct.young)
 
 df <- NULL
-df <- plyr::join_all(list(q25ct.young, q50ct.young, q75ct.young), by='rn', type='full')  
+df <- join_all(list(q25ct.young, q50ct.young, q75ct.young), by='rn', type='full')  
 row.names(df) <- df$rn
 df$rn <- NULL
 df0010t.young <- df[2:5, ] # <- to generate regression tables 
@@ -779,7 +753,7 @@ q50bt.midlife$rn <- rownames(q50bt.midlife)
 q75bt.midlife$rn <- rownames(q75bt.midlife)
 
 df<- NULL
-df <- plyr::join_all(list(q25bt.midlife, q50bt.midlife, q75bt.midlife), by='rn', type='full') 
+df <- join_all(list(q25bt.midlife, q50bt.midlife, q75bt.midlife), by='rn', type='full') 
 row.names(df) <- df$rn
 df$rn <- NULL
 df9000t.midlife <- df[2:5, ] # <- to generate regression tables 
@@ -798,7 +772,7 @@ q50ct.midlife$rn <- rownames(q50ct.midlife)
 q75ct.midlife$rn <- rownames(q75ct.midlife)
 
 df <- NULL
-df <- plyr::join_all(list(q25ct.midlife, q50ct.midlife, q75ct.midlife), by='rn', type='full')  
+df <- join_all(list(q25ct.midlife, q50ct.midlife, q75ct.midlife), by='rn', type='full')  
 row.names(df) <- df$rn
 df$rn <- NULL
 df0010t.midlife <- df[2:5, ] # <- to generate regression tables 
@@ -844,7 +818,7 @@ q50bt.middle$rn <- rownames(q50bt.middle)
 q75bt.middle$rn <- rownames(q75bt.middle)
 
 df<- NULL
-df <- plyr::join_all(list(q25bt.middle, q50bt.middle, q75bt.middle), by='rn', type='full') 
+df <- join_all(list(q25bt.middle, q50bt.middle, q75bt.middle), by='rn', type='full') 
 row.names(df) <- df$rn
 df$rn <- NULL
 df9000t.middle <- df[2:5, ] # <- to generate regression tables 
@@ -863,7 +837,7 @@ q50ct.middle$rn <- rownames(q50ct.middle)
 q75ct.middle$rn <- rownames(q75ct.middle)
 
 df <- NULL
-df <- plyr::join_all(list(q25ct.middle, q50ct.middle, q75ct.middle), by='rn', type='full')  
+df <- join_all(list(q25ct.middle, q50ct.middle, q75ct.middle), by='rn', type='full')  
 row.names(df) <- df$rn
 df$rn <- NULL
 df0010t.middle <- df[2:5, ] # <- to generate regression tables 
@@ -891,37 +865,11 @@ df9010t.middle <- do.call("rbind", list(
 df9010t.middle <- df9010t.middle[c(1, 5, 2, 6, 3, 7, 4, 8), ]
 
 
+df9010t.youngest
+df9010t.young
+df9010t.midlife
+df9010t.middle
 
-df9010t.youngest 
-df9010t.young 
-df9010t.midlife 
-df9010t.middle 
-
-write.csv(df9010t.youngest, file="M:/Millennial_panel/09_NetMigration1980/scrach/df9010t_youngest.csv")
-write.csv(df9010t.young,    file="M:/Millennial_panel/09_NetMigration1980/scrach/df9010t_young.csv")
-write.csv(df9010t.midlife,  file="M:/Millennial_panel/09_NetMigration1980/scrach/df9010t_midlife.csv")
-write.csv(df9010t.middle,   file="M:/Millennial_panel/09_NetMigration1980/scrach/df9010t_middle.csv")
-
-
-df9010t.youngest[1:2, ]
-df9010t.young[1:2, ]
-df9010t.midlife[1:2, ]
-df9010t.middle[1:2, ]
-
-df9010t.youngest[3:4, ]
-df9010t.young[3:4, ]
-df9010t.midlife[3:4, ]
-df9010t.middle[3:4, ]
-
-df9010t.youngest[5:6, ]
-df9010t.young[5:6, ]
-df9010t.midlife[5:6, ]
-df9010t.middle[5:6, ]
-
-df9010t.youngest[7:8, ]
-df9010t.young[7:8, ]
-df9010t.midlife[7:8, ]
-df9010t.middle[7:8, ]
 
 
 # 5. Estimate UA-specific models for 1990-2010 (to test lncden9000b & lncden0010b)
@@ -1009,88 +957,43 @@ mysummary9010 <- function(city, inputwmat, inputdata) {
 }
 
 UA01summary9010 <- mysummary9010("Atlanta",   wmat01, geodataUA01)
-colnames(UA01summary9010) <- c("Coef25", "sig25", "rn", "Coef50", "sig50", "Coef75", "sig75")
 UA02summary9010 <- mysummary9010("Baltimore", wmat02, geodataUA02)
-colnames(UA02summary9010) <- c("Coef25", "sig25", "rn", "Coef50", "sig50", "Coef75", "sig75")
 UA03summary9010 <- mysummary9010("Boston", wmat03, geodataUA03)
-colnames(UA03summary9010) <- c("Coef25", "sig25", "rn", "Coef50", "sig50", "Coef75", "sig75")
 UA04summary9010 <- mysummary9010("Chicago", wmat04, geodataUA04)
-colnames(UA04summary9010) <- c("Coef25", "sig25", "rn", "Coef50", "sig50", "Coef75", "sig75")
 UA05summary9010 <- mysummary9010("Cleveland", wmat05, geodataUA05)
-colnames(UA05summary9010) <- c("Coef25", "sig25", "rn", "Coef50", "sig50", "Coef75", "sig75")
 UA06summary9010 <- mysummary9010("Dallas", wmat06, geodataUA06)
-colnames(UA06summary9010) <- c("Coef25", "sig25", "rn", "Coef50", "sig50", "Coef75", "sig75")
 UA07summary9010 <- mysummary9010("Detroit", wmat07, geodataUA07)
-colnames(UA07summary9010) <- c("Coef25", "sig25", "rn", "Coef50", "sig50", "Coef75", "sig75")
 UA08summary9010 <- mysummary9010("Houston", wmat08, geodataUA08)
-colnames(UA08summary9010) <- c("Coef25", "sig25", "rn", "Coef50", "sig50", "Coef75", "sig75")
 UA09summary9010 <- mysummary9010("LA", wmat09, geodataUA09)
-colnames(UA09summary9010) <- c("Coef25", "sig25", "rn", "Coef50", "sig50", "Coef75", "sig75")
 UA10summary9010 <- mysummary9010("Miami", wmat10, geodataUA10)
-colnames(UA10summary9010) <- c("Coef25", "sig25", "rn", "Coef50", "sig50", "Coef75", "sig75")
 
 UA11summary9010 <- mysummary9010("Minneapolis",   wmat11, geodataUA11)
-colnames(UA11summary9010) <- c("Coef25", "sig25", "rn", "Coef50", "sig50", "Coef75", "sig75")
 UA12summary9010 <- mysummary9010("New York", wmat12, geodataUA12)
-colnames(UA12summary9010) <- c("Coef25", "sig25", "rn", "Coef50", "sig50", "Coef75", "sig75")
 UA13summary9010 <- mysummary9010("Philadelphia", wmat13, geodataUA13)
-colnames(UA13summary9010) <- c("Coef25", "sig25", "rn", "Coef50", "sig50", "Coef75", "sig75")
 UA14summary9010 <- mysummary9010("Phoenix", wmat14, geodataUA14)
-colnames(UA14summary9010) <- c("Coef25", "sig25", "rn", "Coef50", "sig50", "Coef75", "sig75")
 UA15summary9010 <- mysummary9010("St Louis", wmat15, geodataUA15)
-colnames(UA15summary9010) <- c("Coef25", "sig25", "rn", "Coef50", "sig50", "Coef75", "sig75")
 UA16summary9010 <- mysummary9010("San Diego", wmat16, geodataUA16)
-colnames(UA16summary9010) <- c("Coef25", "sig25", "rn", "Coef50", "sig50", "Coef75", "sig75")
 UA17summary9010 <- mysummary9010("San Francisco", wmat17, geodataUA17)
-colnames(UA17summary9010) <- c("Coef25", "sig25", "rn", "Coef50", "sig50", "Coef75", "sig75")
 UA18summary9010 <- mysummary9010("Seattle", wmat18, geodataUA18)
-colnames(UA18summary9010) <- c("Coef25", "sig25", "rn", "Coef50", "sig50", "Coef75", "sig75")
 UA19summary9010 <- mysummary9010("Tampa", wmat19, geodataUA19)
-colnames(UA19summary9010) <- c("Coef25", "sig25", "rn", "Coef50", "sig50", "Coef75", "sig75")
 UA20summary9010 <- mysummary9010("Washington DC", wmat20, geodataUA20)
-colnames(UA20summary9010) <- c("Coef25", "sig25", "rn", "Coef50", "sig50", "Coef75", "sig75")
 
 UAsummary9000 <- do.call("rbind", list(UA01summary9010[8, ], UA02summary9010[8, ], UA03summary9010[8, ], UA04summary9010[8, ], UA05summary9010[8, ],
                                        UA06summary9010[8, ], UA07summary9010[8, ], UA08summary9010[8, ], UA09summary9010[8, ], UA10summary9010[8, ],
                                        UA11summary9010[8, ], UA12summary9010[8, ], UA13summary9010[8, ], UA14summary9010[8, ], UA15summary9010[8, ],
                                        UA16summary9010[8, ], UA17summary9010[8, ], UA18summary9010[8, ], UA19summary9010[8, ], UA20summary9010[8, ]))
-UAsummary9000$rn <- NULL 
+
 UAsummary0010 <- do.call("rbind", list(UA01summary9010[9, ], UA02summary9010[9, ], UA03summary9010[9, ], UA04summary9010[9, ], UA05summary9010[9, ],
                                        UA06summary9010[9, ], UA07summary9010[9, ], UA08summary9010[9, ], UA09summary9010[9, ], UA10summary9010[9, ],
                                        UA11summary9010[9, ], UA12summary9010[9, ], UA13summary9010[9, ], UA14summary9010[9, ], UA15summary9010[9, ],
                                        UA16summary9010[9, ], UA17summary9010[9, ], UA18summary9010[9, ], UA19summary9010[9, ], UA20summary9010[9, ]))
-UAsummary0010$rn <- NULL
-UAsummary9010 <- cbind(UAsummary9000, UAsummary0010)
 
-colnames(UAsummary9010) <- c("Coef.9000.25", "sig.9000.25", "Coef.9000.50", "sig.9000.50", "Coef.9000.75", "sig.9000.75", 
-                             "Coef.0010.25", "sig.0010.25", "Coef.0010.50", "sig.0010.50", "Coef.0010.75", "sig.0010.75")
+UAsummary9010 <- cbind(UAsummary9000, UAsummary0010)
+colnames(UAsummary9010) <- c("Coef25", "sig25", "Coef50", "sig50", "Coef75", "sig75")
 row.names(UAsummary9010) <- c("Atlanta", "Baltimore", "Boston", "Chicago", "Cleveland", 
-                              "Dallas", "Detroit", "Houston", "LA", "Miami", 
+                              "Dallas", "Detroit", "Houston""", "LA", "Miami", 
                               "Minneapolis", "New York", "Philadelphia", "Phoenix", "St Louis", 
                               "San Diego", "San Francisco", "Seattle", "Tampa", "Washington DC")
+
 UAsummary9010
-
-write.csv(UA01summary9010, file="M:/Millennial_panel/09_NetMigration1980/scrach/UA01summary.csv")
-write.csv(UA02summary9010, file="M:/Millennial_panel/09_NetMigration1980/scrach/UA02summary.csv")
-write.csv(UA03summary9010, file="M:/Millennial_panel/09_NetMigration1980/scrach/UA03summary.csv")
-write.csv(UA04summary9010, file="M:/Millennial_panel/09_NetMigration1980/scrach/UA04summary.csv")
-write.csv(UA05summary9010, file="M:/Millennial_panel/09_NetMigration1980/scrach/UA05summary.csv")
-write.csv(UA06summary9010, file="M:/Millennial_panel/09_NetMigration1980/scrach/UA06summary.csv")
-write.csv(UA07summary9010, file="M:/Millennial_panel/09_NetMigration1980/scrach/UA07summary.csv")
-write.csv(UA08summary9010, file="M:/Millennial_panel/09_NetMigration1980/scrach/UA08summary.csv")
-write.csv(UA09summary9010, file="M:/Millennial_panel/09_NetMigration1980/scrach/UA09summary.csv")
-write.csv(UA10summary9010, file="M:/Millennial_panel/09_NetMigration1980/scrach/UA10summary.csv")
-
-write.csv(UA11summary9010, file="M:/Millennial_panel/09_NetMigration1980/scrach/UA11summary.csv")
-write.csv(UA12summary9010, file="M:/Millennial_panel/09_NetMigration1980/scrach/UA12summary.csv")
-write.csv(UA13summary9010, file="M:/Millennial_panel/09_NetMigration1980/scrach/UA13summary.csv")
-write.csv(UA14summary9010, file="M:/Millennial_panel/09_NetMigration1980/scrach/UA14summary.csv")
-write.csv(UA15summary9010, file="M:/Millennial_panel/09_NetMigration1980/scrach/UA15summary.csv")
-write.csv(UA16summary9010, file="M:/Millennial_panel/09_NetMigration1980/scrach/UA16summary.csv")
-write.csv(UA17summary9010, file="M:/Millennial_panel/09_NetMigration1980/scrach/UA17summary.csv")
-write.csv(UA18summary9010, file="M:/Millennial_panel/09_NetMigration1980/scrach/UA18summary.csv")
-write.csv(UA19summary9010, file="M:/Millennial_panel/09_NetMigration1980/scrach/UA19summary.csv")
-write.csv(UA20summary9010, file="M:/Millennial_panel/09_NetMigration1980/scrach/UA20summary.csv")
-
-
 

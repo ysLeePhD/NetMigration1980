@@ -24,7 +24,6 @@ library(stargazer)
 setwd("M:/Millennial_panel/09_NetMigration1980/Scrach")
 
 
-
 #1. import the main dataset 
 
 temp  <- read.sas7bdat("M:/Millennial_panel/05_Scratch/pool3.sas7bdat")
@@ -115,6 +114,7 @@ geodata0010@data <- geodata0010@data[order(geodata0010@data$UA, geodata0010@data
 
 #2.4. three-decade models: Estimate spatial lag & error models for 80s.
 
+set.ZeroPolicyOption(TRUE)
 list.queen.80s <- poly2nb(geodata8090, queen=TRUE)
 W.80s <- nb2listw(list.queen.80s, style="W", zero.policy=TRUE)
 
