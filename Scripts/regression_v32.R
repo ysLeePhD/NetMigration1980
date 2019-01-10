@@ -429,4 +429,56 @@ stargazer(rq.youngest, rq.young, rq.midlife, rq.middle,
 
 
 
+#7. Quantile at the 50th percentile: UA-specific 2-decade models 
+
+as.character(as.data.frame(table(migrdata$UAname))[, 1])
+
+
+rq2.young.form <- 
+  Migr_young ~ f_ccity9000b + f_ccity0010b + f_pden9000b + f_pden0010b + 
+  f_pt9000b + f_pt0010b + lncden9000b + lncden0010b + 
+  yr0010 +  lnpop100 + pctyoungbg + pctnhw + pctforeign + pctpro + lnmedhhinc + pctunemp + pctmulti
+
+percentile <- 0.75
+  
+rq2.young.UA01 <- rq(rq2.young.form, tau=percentile, data=migrdata[migrdata$yr8090 != 1 & migrdata$UA01==1, ])
+rq2.young.UA02 <- rq(rq2.young.form, tau=percentile, data=migrdata[migrdata$yr8090 != 1 & migrdata$UA02==1, ])
+rq2.young.UA03 <- rq(rq2.young.form, tau=percentile, data=migrdata[migrdata$yr8090 != 1 & migrdata$UA03==1, ])
+rq2.young.UA04 <- rq(rq2.young.form, tau=percentile, data=migrdata[migrdata$yr8090 != 1 & migrdata$UA04==1, ])
+rq2.young.UA05 <- rq(rq2.young.form, tau=percentile, data=migrdata[migrdata$yr8090 != 1 & migrdata$UA05==1, ])
+rq2.young.UA06 <- rq(rq2.young.form, tau=percentile, data=migrdata[migrdata$yr8090 != 1 & migrdata$UA06==1, ])
+rq2.young.UA07 <- rq(rq2.young.form, tau=percentile, data=migrdata[migrdata$yr8090 != 1 & migrdata$UA07==1, ])
+rq2.young.UA08 <- rq(rq2.young.form, tau=percentile, data=migrdata[migrdata$yr8090 != 1 & migrdata$UA08==1, ])
+rq2.young.UA09 <- rq(rq2.young.form, tau=percentile, data=migrdata[migrdata$yr8090 != 1 & migrdata$UA09==1, ])
+rq2.young.UA10 <- rq(rq2.young.form, tau=percentile, data=migrdata[migrdata$yr8090 != 1 & migrdata$UA10==1, ])
+
+rq2.young.UA11 <- rq(rq2.young.form, tau=percentile, data=migrdata[migrdata$yr8090 != 1 & migrdata$UA11==1, ])
+rq2.young.UA12 <- rq(rq2.young.form, tau=percentile, data=migrdata[migrdata$yr8090 != 1 & migrdata$UA12==1, ])
+rq2.young.UA13 <- rq(rq2.young.form, tau=percentile, data=migrdata[migrdata$yr8090 != 1 & migrdata$UA13==1, ])
+rq2.young.UA14 <- rq(rq2.young.form, tau=percentile, data=migrdata[migrdata$yr8090 != 1 & migrdata$UA14==1, ])
+rq2.young.UA15 <- rq(rq2.young.form, tau=percentile, data=migrdata[migrdata$yr8090 != 1 & migrdata$UA15==1, ])
+rq2.young.UA16 <- rq(rq2.young.form, tau=percentile, data=migrdata[migrdata$yr8090 != 1 & migrdata$UA16==1, ])
+rq2.young.UA17 <- rq(rq2.young.form, tau=percentile, data=migrdata[migrdata$yr8090 != 1 & migrdata$UA17==1, ])
+rq2.young.UA18 <- rq(rq2.young.form, tau=percentile, data=migrdata[migrdata$yr8090 != 1 & migrdata$UA18==1, ])
+rq2.young.UA19 <- rq(rq2.young.form, tau=percentile, data=migrdata[migrdata$yr8090 != 1 & migrdata$UA19==1, ])
+rq2.young.UA20 <- rq(rq2.young.form, tau=percentile, data=migrdata[migrdata$yr8090 != 1 & migrdata$UA20==1, ])
+
+
+stargazer(rq2.young.UA01, rq2.young.UA02, rq2.young.UA03, rq2.young.UA04, rq2.young.UA05, 
+          rq2.young.UA06, rq2.young.UA07, rq2.young.UA08, rq2.young.UA09, rq2.young.UA10, 
+          rq2.young.UA11, rq2.young.UA12, rq2.young.UA13, rq2.young.UA14, rq2.young.UA15, 
+          rq2.young.UA16, rq2.young.UA17, rq2.young.UA18, rq2.young.UA19, rq2.young.UA20, type="text", 
+          title="Net Migration by UA (quantile regression)", 
+          keep = c("f_ccity9000b", "f_ccity0010b", "f_pden9000b", "f_pden0010b", 
+                   "f_pt9000b", "f_pt0010b", "lncden9000b", "lncden0010b", "yr0010"),
+          column.labels = c("Atlanta", "Baltimore", "Boston", "Chicago", "Cleveland", "Dallas",         
+                            "Detroit", "Houston", "Los Angeles", "Miami", "Minneapolis", "New York", 
+                            "Philadelphia", "Phoenix",  "St. Louis", "San Diego", "San Francisco", "Seattle",
+                            "Tampa", "Washington, DC"), 
+          #order=c(1, 2, 3, 11, 12, 4, 5, 6, 13, 14, 7, 8, 9, 15, 16, 17, 18), 
+          #omit=c("UA01", "UA02", "UA03", "UA04", "UA05", 
+          #"UA06", "UA07", "UA08", "UA09", "UA10", 
+          #"UA11", "UA12", "UA13", "UA14", "UA15", 
+          #"UA16", "UA17", "UA18", "UA19", "Constant"), 
+          ci.level=0.9, report="vc*", omit.stat=c("f", "ser"))#), 
 
