@@ -683,8 +683,6 @@ stargazer(rq.youngest, rq.young, rq.midlife, rq.middle,
 
 #7. Quantile at the 50th percentile: UA-specific 2-decade models 
 
-#as.character(as.data.frame(table(migrdata$UAname))[, 1])
-
 migrdataUA <- list()
 for (i in 1:20){
   k <- 53+i
@@ -698,7 +696,7 @@ for (i in 1:20){
     temp01 <- summary(rq(Migr_young ~ f_ccity9000b + f_ccity0010b + f_pden9000b + f_pden0010b +
            f_pt9000b + f_pt0010b + lncden9000b + lncden0010b + yr0010 +
            lnpop100 + pctyoungbg + pctnhw + pctforeign + pctpro + lnmedhhinc + pctunemp + pctmulti,
-         tau = 0.50, data=migrdataUA[[i]]), se = "nid")
+         tau = 0.25, data=migrdataUA[[i]]), se = "nid")
     quantUA25[i, 1:2] <- temp01$coefficients[8, c(1, 4)]
     quantUA25[i, 3:4] <- temp01$coefficients[9, c(1, 4)]
 }
@@ -726,41 +724,56 @@ for (i in 1:20){
   temp01 <- summary(rq(Migr_young ~ f_ccity9000b + f_ccity0010b + f_pden9000b + f_pden0010b +
                          f_pt9000b + f_pt0010b + lncden9000b + lncden0010b + yr0010 +
                          lnpop100 + pctyoungbg + pctnhw + pctforeign + pctpro + lnmedhhinc + pctunemp + pctmulti,
-                       tau = 0.50, data=migrdataUA[[i]]), se = "nid")
+                       tau = 0.75, data=migrdataUA[[i]]), se = "nid")
   quantUA75[i, 1:2] <- temp01$coefficients[8, c(1, 4)]
   quantUA75[i, 3:4] <- temp01$coefficients[9, c(1, 4)]
 }
 
-quantUA25
+rownames(quantUA25) <- c("Atlanta", "Baltimore", "Boston", "Chicago", "Cleveland", 
+                         "Dallas", "Detroit", "Houston", "Los Angeles", "Miami", 
+                         "Minneapolis", "New York","Philadelphia", "Phoenix",  "St. Louis", 
+                         "San Diego", "San Francisco", "Seattle", "Tampa", "Washington, DC")
+rownames(quantUA50) <- rownames(quantUA25) 
+rownames(quantUA75) <- rownames(quantUA25) 
+
+quantUA25$UAname <- rownames(quantUA25)
+quantUA50$UAname <- rownames(quantUA50)
+quantUA75$UAname <- rownames(quantUA75)
+
+colnames(quantUA25) <- c("c.90s", "p.90s", "c.00s", "p.00s", "UAname")
+colnames(quantUA50) <- c("c.90s", "p.90s", "c.00s", "p.00s", "UAname")
+colnames(quantUA75) <- c("c.90s", "p.90s", "c.00s", "p.00s", "UAname")
+
+quantUA25$percentile <- "25th"
+quantUA50$percentile <- "50th"
+quantUA75$percentile <- "75th"
+
+quantUA25$sig.90s <- ifelse(quantUA25$p.90s<0.01, "***", 
+                            ifelse(quantUA25$p.90s<0.05, "**", 
+                                   ifelse(quantUA25$p.90s<0.1, "*", "")))
+quantUA25$sig.00s <- ifelse(quantUA25$p.00s<0.01, "***", 
+                            ifelse(quantUA25$p.00s<0.05, "**", 
+                                   ifelse(quantUA25$p.00s<0.1, "*", "")))
+quantUA25 <- quantUA25[, c(1, 7, 3, 8, 6)] 
+
+
+quantUA50$sig.90s <- ifelse(quantUA50$p.90s<0.01, "***", 
+                            ifelse(quantUA50$p.90s<0.05, "**", 
+                                   ifelse(quantUA50$p.90s<0.1, "*", "")))
+quantUA50$sig.00s <- ifelse(quantUA50$p.00s<0.01, "***", 
+                            ifelse(quantUA50$p.00s<0.05, "**", 
+                                   ifelse(quantUA50$p.00s<0.1, "*", "")))
+quantUA50 <- quantUA50[, c(1, 7, 3, 8, 6)] 
+
+
+quantUA75$sig.90s <- ifelse(quantUA75$p.90s<0.01, "***", 
+                            ifelse(quantUA75$p.90s<0.05, "**", 
+                                   ifelse(quantUA75$p.90s<0.1, "*", "")))
+quantUA75$sig.00s <- ifelse(quantUA75$p.00s<0.01, "***", 
+                            ifelse(quantUA75$p.00s<0.05, "**", 
+                                   ifelse(quantUA75$p.00s<0.1, "*", "")))
+quantUA75 <- quantUA75[, c(1, 7, 3, 8, 6)] 
+
+quantUA25 
 quantUA50
 quantUA75
-
-
-stargazer(rq2.young.UA01, rq2.young.UA02, rq2.young.UA03, rq2.young.UA04, rq2.young.UA05, 
-          rq2.young.UA06, rq2.young.UA07, rq2.young.UA08, rq2.young.UA09, rq2.young.UA10, type="text", 
-          title="Net Migration by UA (quantile regression)", 
-          keep = c("f_ccity9000b", "f_ccity0010b", "f_pden9000b", "f_pden0010b", 
-                   "f_pt9000b", "f_pt0010b", "lncden9000b", "lncden0010b", "yr0010"),
-          column.labels = c("Atlanta", "Baltimore", "Boston", "Chicago", "Cleveland", 
-                            "Dallas", "Detroit", "Houston", "Los Angeles", "Miami"), 
-          #order=c(1, 2, 3, 11, 12, 4, 5, 6, 13, 14, 7, 8, 9, 15, 16, 17, 18), 
-          #omit=c("UA01", "UA02", "UA03", "UA04", "UA05", 
-          #"UA06", "UA07", "UA08", "UA09", "UA10", 
-          #"UA11", "UA12", "UA13", "UA14", "UA15", 
-          #"UA16", "UA17", "UA18", "UA19", "Constant"), 
-          ci.level=0.9, report="vc*", omit.stat=c("f", "ser"))#), 
-
-stargazer(rq2.young.UA11, rq2.young.UA12, rq2.young.UA13, rq2.young.UA14, rq2.young.UA15, 
-          rq2.young.UA16, rq2.young.UA17, rq2.young.UA18, rq2.young.UA19, rq2.young.UA20, type="text", 
-          title="Net Migration by UA (quantile regression)", 
-          keep = c("f_ccity9000b", "f_ccity0010b", "f_pden9000b", "f_pden0010b", 
-                   "f_pt9000b", "f_pt0010b", "lncden9000b", "lncden0010b", "yr0010"),
-          column.labels = c("Minneapolis", "New York","Philadelphia", "Phoenix",  "St. Louis", 
-                            "San Diego", "San Francisco", "Seattle", "Tampa", "Washington, DC"), 
-          #order=c(1, 2, 3, 11, 12, 4, 5, 6, 13, 14, 7, 8, 9, 15, 16, 17, 18), 
-          #omit=c("UA01", "UA02", "UA03", "UA04", "UA05", 
-          #"UA06", "UA07", "UA08", "UA09", "UA10", 
-          #"UA11", "UA12", "UA13", "UA14", "UA15", 
-          #"UA16", "UA17", "UA18", "UA19", "Constant"), 
-          ci.level=0.9, report="vc*", omit.stat=c("f", "ser"))#), 
-

@@ -25,13 +25,13 @@ library(McSpatial)
 library(tidyverse)
 library(dplyr)
 
-setwd("M:/Millennial_panel/09_NetMigration1980/Scrach")
+setwd("C:/Users/ylee366/Dropbox (GaTech)/3b_ResearchPersonal/11_BSL/Millennial_panel/09_NetMigration1980/Scratch")
 
 
 
 #1. import the main dataset 
 
-temp  <- read.sas7bdat("M:/Millennial_panel/05_Scratch/pool3.sas7bdat")
+temp  <- read.sas7bdat("C:/Users/ylee366/Dropbox (GaTech)/3b_ResearchPersonal/11_BSL/Millennial_panel/05_Scratch/pool3.sas7bdat")
 colnames(temp)
 nrow(temp)
 
@@ -71,22 +71,22 @@ migrdata$StCntTrYr <- paste0(migrdata$stcnttr, migrdata$decade)
 
 migrdata <- migrdata[, c(1:4, 67:68, 5:42, 66, 43:65)]
 #head(migrdata)
-#colnames(migrdata)
+colnames(migrdata)
 
 
 #2.2. process three shapefiles 
 
-shp.YR8090 <- readOGR("M://Millennial_panel/15_GIS/CTUA", layer = "1980CTUA")
+shp.YR8090 <- readOGR("C:/Users/ylee366/Dropbox (GaTech)/3b_ResearchPersonal/11_BSL/Millennial_panel/15_GIS/CTUA", layer = "1980CTUA")
 shp.YR8090@data <- shp.YR8090@data["StCntTr"]
 shp.YR8090@data$StCntTrYr <- paste0(shp.YR8090@data$StCntTr, "yr8090") 
 shp.YR8090 <- spChFIDs(shp.YR8090, shp.YR8090@data$StCntTrYr) # change the fid field 
 
-shp.YR9000 <- readOGR("M://Millennial_panel/15_GIS/CTUA", layer = "1990CTUA")
+shp.YR9000 <- readOGR("C:/Users/ylee366/Dropbox (GaTech)/3b_ResearchPersonal/11_BSL/Millennial_panel/15_GIS/CTUA", layer = "1990CTUA")
 shp.YR9000@data <- shp.YR9000@data["StCntTr"]
 shp.YR9000@data$StCntTrYr <- paste0(shp.YR9000@data$StCntTr, "yr9000")
 shp.YR9000 <- spChFIDs(shp.YR9000, shp.YR9000@data$StCntTrYr) # change the fid field 
 
-shp.YR0010 <- readOGR("M://Millennial_panel/15_GIS/CTUA", layer = "2000CTUA")
+shp.YR0010 <- readOGR("C:/Users/ylee366/Dropbox (GaTech)/3b_ResearchPersonal/11_BSL/Millennial_panel/15_GIS/CTUA", layer = "2000CTUA")
 shp.YR0010@data <- shp.YR0010@data["StCntTr"]
 shp.YR0010@data$StCntTrYr <- paste0(shp.YR0010@data$StCntTr, "yr0010")
 shp.YR0010 <- spChFIDs(shp.YR0010, shp.YR0010@data$StCntTrYr) # change the fid field 
@@ -215,19 +215,22 @@ wmat0010 <- blockMatrixDiagonal(wmat01c, wmat02c, wmat03c, wmat04c, wmat05c, wma
 
 form8090.youngest <- Migr_youngest ~  
   cc8090_5 + lnpden8090 +  One_Transit8090 + 
-  lnpop100 + pctyoungestbg + pctnhw + pctforeign + pctmulti + #elem +  
+  lnpop100 + pctyoungestbg + pctnhw + pctforeign + pctpro +  
+  lnmedhhinc + pctunemp + pctmulti + #elem +  
   UA01 + UA02 + UA03 + UA04 + UA05 + UA06 + UA07 + UA08 + UA09 + UA10 + 
   UA11 + UA12 + UA13 + UA14 + UA15 + UA16 + UA17 + UA18 + UA19
 
 form9000.youngest <-  Migr_youngest ~  
   cc9000_5 + lnpden9000 + One_Transit9000 + 
-  lnpop100 + pctyoungestbg + pctnhw + pctforeign + pctmulti + #elem +  
+  lnpop100 + pctyoungestbg + pctnhw + pctforeign + pctpro +  
+  lnmedhhinc + pctunemp + pctmulti + #elem +  
   UA01 + UA02 + UA03 + UA04 + UA05 + UA06 + UA07 + UA08 + UA09 + UA10 + 
   UA11 + UA12 + UA13 + UA14 + UA15 + UA16 + UA17 + UA18 + UA19
 
 form0010.youngest <-  Migr_youngest ~   
   cc0010_5 + lnpden0010 + One_Transit0010 + 
-  lnpop100 + pctyoungestbg + pctnhw + pctforeign + pctmulti + #elem +  
+  lnpop100 + pctyoungestbg + pctnhw + pctforeign + pctpro +  
+  lnmedhhinc + pctunemp + pctmulti + #elem +  
   UA01 + UA02 + UA03 + UA04 + UA05 + UA06 + UA07 + UA08 + UA09 + UA10 + 
   UA11 + UA12 + UA13 + UA14 + UA15 + UA16 + UA17 + UA18 + UA19
 
@@ -304,19 +307,21 @@ df0010.youngest
 
 form8090.young <- Migr_young ~    
   cc8090_5 + lnpden8090 +  One_Transit8090 + 
-  lnpop100 + pctyoungbg + pctnhw + pctforeign + pctmulti + #elem +  
+  lnpop100 + pctyoungestbg + pctnhw + pctforeign + pctpro +  
+  lnmedhhinc + pctunemp + pctmulti + #elem +  
   UA01 + UA02 + UA03 + UA04 + UA05 + UA06 + UA07 + UA08 + UA09 + UA10 + 
   UA11 + UA12 + UA13 + UA14 + UA15 + UA16 + UA17 + UA18 + UA19
 
 form9000.young <-  Migr_young ~   
   cc9000_5 + lnpden9000 + One_Transit9000 + 
-  lnpop100 + pctyoungbg + pctnhw + pctforeign + pctmulti + #elem +  
+  lnpop100 + pctyoungestbg + pctnhw + pctforeign + pctpro +  
+  lnmedhhinc + pctunemp + pctmulti + #elem +  
   UA01 + UA02 + UA03 + UA04 + UA05 + UA06 + UA07 + UA08 + UA09 + UA10 + 
   UA11 + UA12 + UA13 + UA14 + UA15 + UA16 + UA17 + UA18 + UA19
 
 form0010.young <-  Migr_young ~  
-  cc0010_5 + lnpden0010 + One_Transit0010 + 
-  lnpop100 + pctyoungbg + pctnhw + pctforeign + pctmulti + #elem +  
+  lnpop100 + pctyoungestbg + pctnhw + pctforeign + pctpro +  
+  lnmedhhinc + pctunemp + pctmulti + #elem +  
   UA01 + UA02 + UA03 + UA04 + UA05 + UA06 + UA07 + UA08 + UA09 + UA10 + 
   UA11 + UA12 + UA13 + UA14 + UA15 + UA16 + UA17 + UA18 + UA19
 
