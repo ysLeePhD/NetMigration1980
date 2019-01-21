@@ -1,6 +1,4 @@
 
-# This code is for non-spatial regression models 
-
 install.packages("sas7bdat", dependencies = TRUE)
 install.packages("tidyverse", dependencies = TRUE)
 install.packages("stargazer", dependencies = TRUE)
@@ -218,42 +216,26 @@ migrdata$cc0010.contd <- 0
 
 youngest.cc.coeff.contd <- data.frame(
   cc8090.contd=numeric(), 
-  cc8090.contd.p=numeric(),
   cc9000.contd=numeric(),
-  cc9000.contd.p=numeric(),
-  cc0010.contd=numeric(),
-  cc0010.contd.p=numeric())
+  cc0010.contd=numeric())
 
 young.cc.coeff.contd <- data.frame(
   cc8090.contd=numeric(), 
-  cc8090.contd.p=numeric(),
   cc9000.contd=numeric(),
-  cc9000.contd.p=numeric(),
-  cc0010.contd=numeric(),
-  cc0010.contd.p=numeric())
+  cc0010.contd=numeric())
 
 midlife.cc.coeff.contd <- data.frame(
   cc8090.contd=numeric(), 
-  cc8090.contd.p=numeric(),
   cc9000.contd=numeric(),
-  cc9000.contd.p=numeric(),
-  cc0010.contd=numeric(),
-  cc0010.contd.p=numeric())
+  cc0010.contd=numeric())
 
 middle.cc.coeff.contd <- data.frame(
   cc8090.contd=numeric(), 
-  cc8090.contd.p=numeric(),
   cc9000.contd=numeric(),
-  cc9000.contd.p=numeric(),
-  cc0010.contd=numeric(),
-  cc0010.contd.p=numeric())
+  cc0010.contd=numeric())
 
 
 for (i in 1:450){
-  migrdata$cc8090.contd <- 0 
-  migrdata$cc9000.contd <- 0 
-  migrdata$cc0010.contd <- 0 
-  
   migrdata$cc8090.contd <- ifelse(migrdata$yr8090==1 & exp(migrdata$ln_dist_cbd8090)-1 < cc.cutoff[i], 1, migrdata$cc8090.contd)
   migrdata$cc9000.contd <- ifelse(migrdata$yr9000==1 & exp(migrdata$ln_dist_cbd9000)-1 < cc.cutoff[i], 1, migrdata$cc9000.contd)
   migrdata$cc0010.contd <- ifelse(migrdata$yr0010==1 & exp(migrdata$ln_dist_cbd0010)-1 < cc.cutoff[i], 1, migrdata$cc0010.contd)
@@ -269,8 +251,7 @@ for (i in 1:450){
   
   youngest.results <- summary(lm.youngest.contd)$coefficients %>% 
     as.data.frame() 
-  youngest.cc.coeff.contd[i, c(1, 3, 5)]<- youngest.results[2:4, 1]
-  youngest.cc.coeff.contd[i, c(2, 4, 6)]<- youngest.results[2:4, 4]
+  youngest.cc.coeff.contd[i, ]<- youngest.results[2:4, 1]
   
   lm.young.contd <- lm(Migr_young ~ #ln_dist_cbd8090 + ln_dist_cbd9000 + ln_dist_cbd0010 + 
                          cc8090.contd + cc9000.contd + cc0010.contd + lnpden9000 + lnpden0010 + 
@@ -284,8 +265,7 @@ for (i in 1:450){
   young.results <- summary(lm.young.contd)$coefficients %>% 
     as.data.frame() 
   
-  young.cc.coeff.contd[i, c(1, 3, 5)]<- young.results[2:4, 1]
-  young.cc.coeff.contd[i, c(2, 4, 6)]<- young.results[2:4, 4]
+  young.cc.coeff.contd[i, ]<- young.results[2:4, 1]
   
   lm.midlife.contd <- lm(Migr_midlife ~ #ln_dist_cbd8090 + ln_dist_cbd9000 + ln_dist_cbd0010 + 
                            cc8090.contd + cc9000.contd + cc0010.contd + lnpden9000 + lnpden0010 + 
@@ -298,8 +278,7 @@ for (i in 1:450){
   
   midlife.results <- summary(lm.midlife.contd)$coefficients %>% 
     as.data.frame() 
-  midlife.cc.coeff.contd[i, c(1, 3, 5)]<- midlife.results[2:4, 1]
-  midlife.cc.coeff.contd[i, c(2, 4, 6)]<- midlife.results[2:4, 4]
+  midlife.cc.coeff.contd[i, ]<- midlife.results[2:4, 1]
   
   lm.middle.contd <- lm(Migr_middle ~ #ln_dist_cbd8090 + ln_dist_cbd9000 + ln_dist_cbd0010 + 
                           cc8090.contd + cc9000.contd + cc0010.contd + lnpden9000 + lnpden0010 + 
@@ -312,92 +291,29 @@ for (i in 1:450){
   
   middle.results <- summary(lm.middle.contd)$coefficients %>% 
     as.data.frame() 
-  middle.cc.coeff.contd[i, c(1, 3, 5)]<- middle.results[2:4, 1]  
-  middle.cc.coeff.contd[i, c(2, 4, 6)]<- middle.results[2:4, 4]  
+  middle.cc.coeff.contd[i, ]<- middle.results[2:4, 1]  
 }
 
 youngest.cc.coeff.contd$miles <- 1:450/10
-temp <- youngest.cc.coeff.contd %>% 
+youngest.cc.coeff.contd <- youngest.cc.coeff.contd %>% 
   gather(`cc8090.contd`, `cc9000.contd`, `cc0010.contd`, key = "decade", value = "coefficients") 
-temp$pvalue <- ifelse(temp$decade=="cc8090.contd", temp$cc8090.contd.p, 
-                      ifelse(temp$decade=="cc9000.contd", temp$cc9000.contd.p, 
-                             ifelse(temp$decade=="cc0010.contd", temp$cc0010.contd.p, NA)))
-youngest.cc.coeff.contd <- temp[, 4:7]
 youngest.cc.coeff.contd$decade <- factor(youngest.cc.coeff.contd$decade, 
                                          levels = c("cc8090.contd", "cc9000.contd", "cc0010.contd"))
 young.cc.coeff.contd$miles <- 1:450/10
-temp <- young.cc.coeff.contd %>% 
+young.cc.coeff.contd <- young.cc.coeff.contd %>% 
   gather(`cc8090.contd`, `cc9000.contd`, `cc0010.contd`, key = "decade", value = "coefficients") 
-temp$pvalue <- ifelse(temp$decade=="cc8090.contd", temp$cc8090.contd.p, 
-                      ifelse(temp$decade=="cc9000.contd", temp$cc9000.contd.p, 
-                             ifelse(temp$decade=="cc0010.contd", temp$cc0010.contd.p, NA)))
-young.cc.coeff.contd <- temp[, 4:7]
 young.cc.coeff.contd$decade <- factor(young.cc.coeff.contd$decade, 
                                          levels = c("cc8090.contd", "cc9000.contd", "cc0010.contd"))
 midlife.cc.coeff.contd$miles <- 1:450/10
-temp <- midlife.cc.coeff.contd %>% 
+midlife.cc.coeff.contd <- midlife.cc.coeff.contd %>% 
   gather(`cc8090.contd`, `cc9000.contd`, `cc0010.contd`, key = "decade", value = "coefficients") 
-temp$pvalue <- ifelse(temp$decade=="cc8090.contd", temp$cc8090.contd.p, 
-                      ifelse(temp$decade=="cc9000.contd", temp$cc9000.contd.p, 
-                             ifelse(temp$decade=="cc0010.contd", temp$cc0010.contd.p, NA)))
-midlife.cc.coeff.contd <- temp[, 4:7]
 midlife.cc.coeff.contd$decade <- factor(midlife.cc.coeff.contd$decade, 
                                          levels = c("cc8090.contd", "cc9000.contd", "cc0010.contd"))
 middle.cc.coeff.contd$miles <- 1:450/10
-temp <- middle.cc.coeff.contd %>% 
+middle.cc.coeff.contd <- middle.cc.coeff.contd %>% 
   gather(`cc8090.contd`, `cc9000.contd`, `cc0010.contd`, key = "decade", value = "coefficients") 
-temp$pvalue <- ifelse(temp$decade=="cc8090.contd", temp$cc8090.contd.p, 
-                      ifelse(temp$decade=="cc9000.contd", temp$cc9000.contd.p, 
-                             ifelse(temp$decade=="cc0010.contd", temp$cc0010.contd.p, NA)))
-middle.cc.coeff.contd <- temp[, 4:7]
 middle.cc.coeff.contd$decade <- factor(middle.cc.coeff.contd$decade, 
                                          levels = c("cc8090.contd", "cc9000.contd", "cc0010.contd"))
-
-youngest.cc.coeff.contd[c(30, 50, 100, 
-                       480, 500, 550, 
-                       930, 950, 1000), ]
-young.cc.coeff.contd[c(30, 50, 100, 
-                       480, 500, 550, 
-                       930, 950, 1000), ]
-midlife.cc.coeff.contd[c(30, 50, 100, 
-                       480, 500, 550, 
-                       930, 950, 1000), ]
-middle.cc.coeff.contd[c(30, 50, 100, 
-                       480, 500, 550, 
-                       930, 950, 1000), ]
-
-summary(lm(Migr_youngest ~ cc8090 + cc9000 + cc0010 + lnpden9000 + lnpden0010 + 
-             One_Transit8090 + One_Transit9000 + One_Transit0010 + yr9000 + yr0010 +  
-             lnpop100 + pctyoungestbg + pctnhw + pctforeign + pctpro + lnmedhhinc + pctunemp + pctmulti +  
-             UA01 + UA02 + UA03 + UA04 + UA05 + UA06 + UA07 + UA08 + UA09 + UA10 +
-             UA11 + UA12 + UA13 + UA14 + UA15 + UA16 + UA17 + UA18 + UA19, 
-             data=migrdata[migrdata$Migr_youngest > quantile(migrdata$Migr_youngest, 0.01) & 
-                           migrdata$Migr_youngest < quantile(migrdata$Migr_youngest, 0.99), ]))$coefficients[2:4, c(1, 4)]
-
-summary(lm(Migr_young ~ cc8090 + cc9000 + cc0010 + lnpden9000 + lnpden0010 +
-             One_Transit8090 + One_Transit9000 + One_Transit0010 + yr9000 + yr0010 +  
-             lnpop100 + pctyoungbg + pctnhw + pctforeign + pctpro + lnmedhhinc + pctunemp + pctmulti +  
-             UA01 + UA02 + UA03 + UA04 + UA05 + UA06 + UA07 + UA08 + UA09 + UA10 +
-             UA11 + UA12 + UA13 + UA14 + UA15 + UA16 + UA17 + UA18 + UA19, 
-             data=migrdata[migrdata$Migr_young > quantile(migrdata$Migr_young, 0.01) & 
-                           migrdata$Migr_young < quantile(migrdata$Migr_young, 0.99), ]))$coefficients[2:4, c(1, 4)]
-
-summary(lm(Migr_midlife ~ cc8090 + cc9000 + cc0010 + lnpden9000 + lnpden0010 +
-             One_Transit8090 + One_Transit9000 + One_Transit0010 + yr9000 + yr0010 +  
-             lnpop100 + pctmidlifebg + pctnhw + pctforeign + pctpro + lnmedhhinc + pctunemp + pctmulti +  
-             UA01 + UA02 + UA03 + UA04 + UA05 + UA06 + UA07 + UA08 + UA09 + UA10 +
-             UA11 + UA12 + UA13 + UA14 + UA15 + UA16 + UA17 + UA18 + UA19, 
-             data=migrdata[migrdata$Migr_midlife > quantile(migrdata$Migr_midlife, 0.01) & 
-                           migrdata$Migr_midlife < quantile(migrdata$Migr_midlife, 0.99), ]))$coefficients[2:4, c(1, 4)]
-
-summary(lm(Migr_middle ~ cc8090 + cc9000 + cc0010 + lnpden9000 + lnpden0010 + 
-             One_Transit8090 + One_Transit9000 + One_Transit0010 + yr9000 + yr0010 +  
-             lnpop100 + pctmiddlebg + pctnhw + pctforeign + pctpro + lnmedhhinc + pctunemp + pctmulti +  
-             UA01 + UA02 + UA03 + UA04 + UA05 + UA06 + UA07 + UA08 + UA09 + UA10 +
-             UA11 + UA12 + UA13 + UA14 + UA15 + UA16 + UA17 + UA18 + UA19, 
-             data=migrdata[migrdata$Migr_middle > quantile(migrdata$Migr_middle, 0.01) & 
-                           migrdata$Migr_middle < quantile(migrdata$Migr_middle, 0.99), ]))$coefficients[2:4, c(1, 4)]
-
 
 ggplot(data = youngest.cc.coeff.contd) + 
   geom_smooth(mapping = aes(x = miles, y = coefficients, color = decade))+ 
@@ -639,7 +555,7 @@ stargazer(lm2.youngest, lm2.young, lm2.midlife, lm2.middle, type="text",
           ci.level=0.9, report="vc*", omit.stat=c("f", "ser"))
 
 stargazer(#lm.youngest , lm.young , lm.midlife , lm.middle , 
-          lm.youngest5, lm.young5, lm.midlife5, lm.middle5, 
+          lm.youngest3, lm.young3, lm.midlife3, lm.middle3, 
           #lm.youngest5, lm.young5, lm.midlife5, lm.middle5, 
           lm2.youngest, lm2.young, lm2.midlife, lm2.middle, type="text",  
           title="Net Migration", 
@@ -649,9 +565,7 @@ stargazer(#lm.youngest , lm.young , lm.midlife , lm.middle ,
                    "lnpden8090", "lnpden9000", "lnpden0010", 
                    "One_Transit8090", "One_Transit9000", "One_Transit0010", 
                    "f_ccity9000b", "f_ccity0010b", "f_pden9000b", "f_pden0010b", 
-                   "f_pt9000b", "f_pt0010b", "lncden9000b", "lncden0010b", "yr9000", "yr0010", 
-                   "lnpop100", "pctyoungestbg", "pctyoungbg", "pctmidlifebg", "pctmiddlebg", 
-                   "pctnhw", "pctforeign", "pctpro", "lnmedhhinc", "pctunemp", "pctmulti"), 
+                   "f_pt9000b", "f_pt0010b", "lncden9000b", "lncden0010b", "yr9000", "yr0010"),
           order=c(1, 2, 3, 11, 12, 4, 5, 6, 13, 14, 7, 8, 9, 15, 16, 17, 18, 10, 19), 
           #omit=c("UA01", "UA02", "UA03", "UA04", "UA05", 
           #"UA06", "UA07", "UA08", "UA09", "UA10", 
@@ -663,7 +577,7 @@ stargazer(#lm.youngest , lm.young , lm.midlife , lm.middle ,
 #5. Quantile at the 50th percentile: 3-decade models 
 
 rq.youngest <- rq(Migr_youngest ~ #ln_dist_cbd8090 + ln_dist_cbd9000 + ln_dist_cbd0010 + 
-                    cc8090_5 + cc9000_5 + cc0010_5 + lnpden8090 + lnpden9000 + lnpden0010 + 
+                    cc8090_3 + cc9000_3 + cc0010_3 + lnpden8090 + lnpden9000 + lnpden0010 + 
                     One_Transit8090 + One_Transit9000 + One_Transit0010 + 
                     yr9000 + yr0010 +  
                     lnpop100 + pctyoungestbg + pctnhw + pctforeign + pctpro +  
@@ -671,17 +585,8 @@ rq.youngest <- rq(Migr_youngest ~ #ln_dist_cbd8090 + ln_dist_cbd9000 + ln_dist_c
                     UA01 + UA02 + UA03 + UA04 + UA05 + UA06 + UA07 + UA08 + UA09 + UA10 +
                     UA11 + UA12 + UA13 + UA14 + UA15 + UA16 + UA17 + UA18 + UA19, tau=0.5, data=migrdata)
 
-rq.young25 <- rq(Migr_young ~ #ln_dist_cbd8090 + ln_dist_cbd9000 + ln_dist_cbd0010 + 
-                   cc8090_5 + cc9000_5 + cc0010_5 + lnpden8090 + lnpden9000 + lnpden0010 + 
-                 One_Transit8090 + One_Transit9000 + One_Transit0010 + 
-                 yr9000 + yr0010 +  
-                 lnpop100 + pctyoungbg + pctnhw + pctforeign + pctpro +  
-                 lnmedhhinc + pctunemp + pctmulti +  
-                 UA01 + UA02 + UA03 + UA04 + UA05 + UA06 + UA07 + UA08 + UA09 + UA10 +
-                 UA11 + UA12 + UA13 + UA14 + UA15 + UA16 + UA17 + UA18 + UA19, tau=0.25, data=migrdata)
-
 rq.young <- rq(Migr_young ~ #ln_dist_cbd8090 + ln_dist_cbd9000 + ln_dist_cbd0010 + 
-                 cc8090_5 + cc9000_5 + cc0010_5 + lnpden8090 + lnpden9000 + lnpden0010 + 
+                 cc8090_3 + cc9000_3 + cc0010_3 + lnpden8090 + lnpden9000 + lnpden0010 + 
                  One_Transit8090 + One_Transit9000 + One_Transit0010 + 
                  yr9000 + yr0010 +  
                  lnpop100 + pctyoungbg + pctnhw + pctforeign + pctpro +  
@@ -689,17 +594,8 @@ rq.young <- rq(Migr_young ~ #ln_dist_cbd8090 + ln_dist_cbd9000 + ln_dist_cbd0010
                  UA01 + UA02 + UA03 + UA04 + UA05 + UA06 + UA07 + UA08 + UA09 + UA10 +
                  UA11 + UA12 + UA13 + UA14 + UA15 + UA16 + UA17 + UA18 + UA19, tau=0.5, data=migrdata)
 
-rq.young75 <- rq(Migr_young ~ #ln_dist_cbd8090 + ln_dist_cbd9000 + ln_dist_cbd0010 + 
-                   cc8090_5 + cc9000_5 + cc0010_5 + lnpden8090 + lnpden9000 + lnpden0010 + 
-                 One_Transit8090 + One_Transit9000 + One_Transit0010 + 
-                 yr9000 + yr0010 +  
-                 lnpop100 + pctyoungbg + pctnhw + pctforeign + pctpro +  
-                 lnmedhhinc + pctunemp + pctmulti +  
-                 UA01 + UA02 + UA03 + UA04 + UA05 + UA06 + UA07 + UA08 + UA09 + UA10 +
-                 UA11 + UA12 + UA13 + UA14 + UA15 + UA16 + UA17 + UA18 + UA19, tau=0.75, data=migrdata)
-
 rq.midlife <- rq(Migr_midlife ~ #ln_dist_cbd8090 + ln_dist_cbd9000 + ln_dist_cbd0010 + 
-                   cc8090_5 + cc9000_5 + cc0010_5 + lnpden8090 + lnpden9000 + lnpden0010 + 
+                   cc8090_3 + cc9000_3 + cc0010_3 + lnpden8090 + lnpden9000 + lnpden0010 + 
                    One_Transit8090 + One_Transit9000 + One_Transit0010 + 
                    yr9000 + yr0010 +  
                    lnpop100 + pctmidlifebg + pctnhw + pctforeign + pctpro +  
@@ -708,7 +604,7 @@ rq.midlife <- rq(Migr_midlife ~ #ln_dist_cbd8090 + ln_dist_cbd9000 + ln_dist_cbd
                    UA11 + UA12 + UA13 + UA14 + UA15 + UA16 + UA17 + UA18 + UA19, tau=0.5, data=migrdata)
 
 rq.middle <- rq(Migr_middle ~ #ln_dist_cbd8090 + ln_dist_cbd9000 + ln_dist_cbd0010 + 
-                  cc8090_5 + cc9000_5 + cc0010_5 + lnpden8090 + lnpden9000 + lnpden0010 + 
+                  cc8090_3 + cc9000_3 + cc0010_3 + lnpden8090 + lnpden9000 + lnpden0010 + 
                   One_Transit8090 + One_Transit9000 + One_Transit0010 + 
                   yr9000 + yr0010 +  
                   lnpop100 + pctmiddlebg + pctnhw + pctforeign + pctpro +  
@@ -736,16 +632,6 @@ rq2.youngest <- rq(Migr_youngest ~ #ln_dist_cbd8090 + ln_dist_cbd9000 + ln_dist_
                      UA11 + UA12 + UA13 + UA14 + UA15 + UA16 + UA17 + UA18 + UA19, tau=0.5, 
                      data=migrdata[migrdata$yr8090 != 1, ])
 
-rq2.young25 <- rq(Migr_young ~ #ln_dist_cbd8090 + ln_dist_cbd9000 + ln_dist_cbd0010 + 
-                  f_ccity9000b + f_ccity0010b + f_pden9000b + f_pden0010b +  
-                  f_pt9000b + f_pt0010b + lncden9000b + lncden0010b + 
-                  yr0010 +  
-                  lnpop100 + pctyoungbg + pctnhw + pctforeign + pctpro +  
-                  lnmedhhinc + pctunemp + pctmulti +  
-                  UA01 + UA02 + UA03 + UA04 + UA05 + UA06 + UA07 + UA08 + UA09 + UA10 +
-                  UA11 + UA12 + UA13 + UA14 + UA15 + UA16 + UA17 + UA18 + UA19, tau=0.25,  
-                data=migrdata[migrdata$yr8090 != 1, ])
-
 rq2.young <- rq(Migr_young ~ #ln_dist_cbd8090 + ln_dist_cbd9000 + ln_dist_cbd0010 + 
                   f_ccity9000b + f_ccity0010b + f_pden9000b + f_pden0010b +  
                   f_pt9000b + f_pt0010b + lncden9000b + lncden0010b + 
@@ -754,16 +640,6 @@ rq2.young <- rq(Migr_young ~ #ln_dist_cbd8090 + ln_dist_cbd9000 + ln_dist_cbd001
                   lnmedhhinc + pctunemp + pctmulti +  
                   UA01 + UA02 + UA03 + UA04 + UA05 + UA06 + UA07 + UA08 + UA09 + UA10 +
                   UA11 + UA12 + UA13 + UA14 + UA15 + UA16 + UA17 + UA18 + UA19, tau=0.5,  
-                data=migrdata[migrdata$yr8090 != 1, ])
-
-rq2.young75 <- rq(Migr_young ~ #ln_dist_cbd8090 + ln_dist_cbd9000 + ln_dist_cbd0010 + 
-                  f_ccity9000b + f_ccity0010b + f_pden9000b + f_pden0010b +  
-                  f_pt9000b + f_pt0010b + lncden9000b + lncden0010b + 
-                  yr0010 +  
-                  lnpop100 + pctyoungbg + pctnhw + pctforeign + pctpro +  
-                  lnmedhhinc + pctunemp + pctmulti +  
-                  UA01 + UA02 + UA03 + UA04 + UA05 + UA06 + UA07 + UA08 + UA09 + UA10 +
-                  UA11 + UA12 + UA13 + UA14 + UA15 + UA16 + UA17 + UA18 + UA19, tau=0.75,  
                 data=migrdata[migrdata$yr8090 != 1, ])
 
 rq2.midlife <- rq(Migr_midlife ~ #ln_dist_cbd8090 + ln_dist_cbd9000 + ln_dist_cbd0010 + 
@@ -787,9 +663,8 @@ rq2.middle <- rq(Migr_middle ~ #ln_dist_cbd8090 + ln_dist_cbd9000 + ln_dist_cbd0
                  data=migrdata[migrdata$yr8090 != 1, ])
 
 
-stargazer(rq.young25, rq.young, rq.young75, lm.young5, #rq.youngest, rq.young, rq.midlife, rq.middle, 
-          rq2.young25, rq2.young, rq2.young75, lm2.young, #rq2.youngest, rq2.young, rq2.midlife, rq2.middle, 
-          type="text", 
+stargazer(rq.youngest, rq.young, rq.midlife, rq.middle, 
+          rq2.youngest, rq2.young, rq2.midlife, rq2.middle, type="text", 
           title="Net Migration (quantile regression)", 
           keep = c("cc8090_3", "cc9000_3", "c0010_3", "cc8090_5", "cc9000_5", "c0010_5", 
                    "lnpden8090", "lnpden9000", "lnpden0010", 
@@ -808,6 +683,8 @@ stargazer(rq.young25, rq.young, rq.young75, lm.young5, #rq.youngest, rq.young, r
 
 #7. Quantile at the 50th percentile: UA-specific 2-decade models 
 
+#as.character(as.data.frame(table(migrdata$UAname))[, 1])
+
 migrdataUA <- list()
 for (i in 1:20){
   k <- 53+i
@@ -821,7 +698,7 @@ for (i in 1:20){
     temp01 <- summary(rq(Migr_young ~ f_ccity9000b + f_ccity0010b + f_pden9000b + f_pden0010b +
            f_pt9000b + f_pt0010b + lncden9000b + lncden0010b + yr0010 +
            lnpop100 + pctyoungbg + pctnhw + pctforeign + pctpro + lnmedhhinc + pctunemp + pctmulti,
-         tau = 0.25, data=migrdataUA[[i]]), se = "nid")
+         tau = 0.50, data=migrdataUA[[i]]), se = "nid")
     quantUA25[i, 1:2] <- temp01$coefficients[8, c(1, 4)]
     quantUA25[i, 3:4] <- temp01$coefficients[9, c(1, 4)]
 }
@@ -849,56 +726,41 @@ for (i in 1:20){
   temp01 <- summary(rq(Migr_young ~ f_ccity9000b + f_ccity0010b + f_pden9000b + f_pden0010b +
                          f_pt9000b + f_pt0010b + lncden9000b + lncden0010b + yr0010 +
                          lnpop100 + pctyoungbg + pctnhw + pctforeign + pctpro + lnmedhhinc + pctunemp + pctmulti,
-                       tau = 0.75, data=migrdataUA[[i]]), se = "nid")
+                       tau = 0.50, data=migrdataUA[[i]]), se = "nid")
   quantUA75[i, 1:2] <- temp01$coefficients[8, c(1, 4)]
   quantUA75[i, 3:4] <- temp01$coefficients[9, c(1, 4)]
 }
 
-rownames(quantUA25) <- c("Atlanta", "Baltimore", "Boston", "Chicago", "Cleveland", 
-                         "Dallas", "Detroit", "Houston", "Los Angeles", "Miami", 
-                         "Minneapolis", "New York","Philadelphia", "Phoenix",  "St. Louis", 
-                         "San Diego", "San Francisco", "Seattle", "Tampa", "Washington, DC")
-rownames(quantUA50) <- rownames(quantUA25) 
-rownames(quantUA75) <- rownames(quantUA25) 
-
-quantUA25$UAname <- rownames(quantUA25)
-quantUA50$UAname <- rownames(quantUA50)
-quantUA75$UAname <- rownames(quantUA75)
-
-colnames(quantUA25) <- c("c.90s", "p.90s", "c.00s", "p.00s", "UAname")
-colnames(quantUA50) <- c("c.90s", "p.90s", "c.00s", "p.00s", "UAname")
-colnames(quantUA75) <- c("c.90s", "p.90s", "c.00s", "p.00s", "UAname")
-
-quantUA25$percentile <- "25th"
-quantUA50$percentile <- "50th"
-quantUA75$percentile <- "75th"
-
-quantUA25$sig.90s <- ifelse(quantUA25$p.90s<0.01, "***", 
-                            ifelse(quantUA25$p.90s<0.05, "**", 
-                                   ifelse(quantUA25$p.90s<0.1, "*", "")))
-quantUA25$sig.00s <- ifelse(quantUA25$p.00s<0.01, "***", 
-                            ifelse(quantUA25$p.00s<0.05, "**", 
-                                   ifelse(quantUA25$p.00s<0.1, "*", "")))
-quantUA25 <- quantUA25[, c(1, 7, 3, 8, 6)] 
-
-
-quantUA50$sig.90s <- ifelse(quantUA50$p.90s<0.01, "***", 
-                            ifelse(quantUA50$p.90s<0.05, "**", 
-                                   ifelse(quantUA50$p.90s<0.1, "*", "")))
-quantUA50$sig.00s <- ifelse(quantUA50$p.00s<0.01, "***", 
-                            ifelse(quantUA50$p.00s<0.05, "**", 
-                                   ifelse(quantUA50$p.00s<0.1, "*", "")))
-quantUA50 <- quantUA50[, c(1, 7, 3, 8, 6)] 
-
-
-quantUA75$sig.90s <- ifelse(quantUA75$p.90s<0.01, "***", 
-                            ifelse(quantUA75$p.90s<0.05, "**", 
-                                   ifelse(quantUA75$p.90s<0.1, "*", "")))
-quantUA75$sig.00s <- ifelse(quantUA75$p.00s<0.01, "***", 
-                            ifelse(quantUA75$p.00s<0.05, "**", 
-                                   ifelse(quantUA75$p.00s<0.1, "*", "")))
-quantUA75 <- quantUA75[, c(1, 7, 3, 8, 6)] 
-
-quantUA25 
+quantUA25
 quantUA50
 quantUA75
+
+
+stargazer(rq2.young.UA01, rq2.young.UA02, rq2.young.UA03, rq2.young.UA04, rq2.young.UA05, 
+          rq2.young.UA06, rq2.young.UA07, rq2.young.UA08, rq2.young.UA09, rq2.young.UA10, type="text", 
+          title="Net Migration by UA (quantile regression)", 
+          keep = c("f_ccity9000b", "f_ccity0010b", "f_pden9000b", "f_pden0010b", 
+                   "f_pt9000b", "f_pt0010b", "lncden9000b", "lncden0010b", "yr0010"),
+          column.labels = c("Atlanta", "Baltimore", "Boston", "Chicago", "Cleveland", 
+                            "Dallas", "Detroit", "Houston", "Los Angeles", "Miami"), 
+          #order=c(1, 2, 3, 11, 12, 4, 5, 6, 13, 14, 7, 8, 9, 15, 16, 17, 18), 
+          #omit=c("UA01", "UA02", "UA03", "UA04", "UA05", 
+          #"UA06", "UA07", "UA08", "UA09", "UA10", 
+          #"UA11", "UA12", "UA13", "UA14", "UA15", 
+          #"UA16", "UA17", "UA18", "UA19", "Constant"), 
+          ci.level=0.9, report="vc*", omit.stat=c("f", "ser"))#), 
+
+stargazer(rq2.young.UA11, rq2.young.UA12, rq2.young.UA13, rq2.young.UA14, rq2.young.UA15, 
+          rq2.young.UA16, rq2.young.UA17, rq2.young.UA18, rq2.young.UA19, rq2.young.UA20, type="text", 
+          title="Net Migration by UA (quantile regression)", 
+          keep = c("f_ccity9000b", "f_ccity0010b", "f_pden9000b", "f_pden0010b", 
+                   "f_pt9000b", "f_pt0010b", "lncden9000b", "lncden0010b", "yr0010"),
+          column.labels = c("Minneapolis", "New York","Philadelphia", "Phoenix",  "St. Louis", 
+                            "San Diego", "San Francisco", "Seattle", "Tampa", "Washington, DC"), 
+          #order=c(1, 2, 3, 11, 12, 4, 5, 6, 13, 14, 7, 8, 9, 15, 16, 17, 18), 
+          #omit=c("UA01", "UA02", "UA03", "UA04", "UA05", 
+          #"UA06", "UA07", "UA08", "UA09", "UA10", 
+          #"UA11", "UA12", "UA13", "UA14", "UA15", 
+          #"UA16", "UA17", "UA18", "UA19", "Constant"), 
+          ci.level=0.9, report="vc*", omit.stat=c("f", "ser"))#), 
+
